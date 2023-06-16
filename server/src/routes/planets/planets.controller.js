@@ -1,4 +1,4 @@
-const planets = require('../../models/planets.model')
+const { planets } = require('../../models/planets.model');
 
 
 function getAllPlanets(req, res) {
@@ -7,4 +7,4 @@ function getAllPlanets(req, res) {
 
 module.exports = {
   getAllPlanets
-}
+};
