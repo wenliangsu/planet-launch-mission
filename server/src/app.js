@@ -17,8 +17,8 @@ app.use(morgan('combined'));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-app.use(planetsRouter);
-app.use(launchesRouter);
+app.use('/planets', planetsRouter);
+app.use('/launches', launchesRouter);
 
 // note 跟create react app有關，因爲只用於single page application(SPA)的應用
 app.get('/*', (req, res) => {
