@@ -29,9 +29,9 @@ function loadPlanetsData() {
         reject(err);
       })
       .on('end', () => {
-        console.log(habitablePlanets.map((planet) => {
-          return planet;
-        }));
+        // console.log(habitablePlanets.map((planet) => {
+        //   return planet;
+        // }));
         console.log(`${habitablePlanets.length} habitable planets found!`);
         resolve();
       });

@@ -8,6 +8,7 @@ import {
 
 function useLaunches(onSuccessSound, onAbortSound, onFailureSound) {
   const [launches, saveLaunches] = useState([]);
+  // useState(): see https://react.dev/reference/react/useState
   const [isPendingLaunch, setPendingLaunch] = useState(false);
 
   const getLaunches = useCallback(async () => {
@@ -21,7 +22,7 @@ function useLaunches(onSuccessSound, onAbortSound, onFailureSound) {
 
   const submitLaunch = useCallback(async (e) => {
     e.preventDefault();
-    // setPendingLaunch(true);
+    setPendingLaunch(true);
     const data = new FormData(e.target);
     const launchDate = new Date(data.get("launch-day"));
     const mission = data.get("mission-name");
@@ -34,8 +35,10 @@ function useLaunches(onSuccessSound, onAbortSound, onFailureSound) {
       target,
     });
 
-    // TODO: Set success based on response.
-    const success = false;
+
+    // Set success based on response.
+    const success = response.ok;
+    // note launches 輸入成功或失敗的時候，會做的後續動作
     if (success) {
       getLaunches();
       setTimeout(() => {
@@ -43,7 +46,10 @@ function useLaunches(onSuccessSound, onAbortSound, onFailureSound) {
         onSuccessSound();
       }, 800);
     } else {
-      onFailureSound();
+      setTimeout(() => {
+        setPendingLaunch(false);
+        onFailureSound();
+      }, 800);
     }
   }, [getLaunches, onSuccessSound, onFailureSound]);
 
