@@ -53,26 +53,23 @@ async function saveLaunch(launch) {
     throw new Error('No matching planet found');
   }
 
-  await launchesDatabase.updateOne({
+  await launchesDatabase.findOneAndUpdate({
     flightNumber: launch.flightNumber,
   }, launch, {
     upsert: true,
   });
 }
 
+async function scheduleNewLaunch(launch) {
+  const newFlightNumber = await getLatestFlightNumber() + 1;
+  const newLaunch = Object.assign(launch, {
+    success: true,
+    upcoming: true,
+    customer: ['Wen', 'NASA'],
+    flightNumber: newFlightNumber,
+  });
 
-function addNewLaunch(launch) {
-  latestFlightNumber++;
-  launches.set(
-    latestFlightNumber,
-    // note object.assign is used to copy the launch object and add the new properties
-    Object.assign(launch, {
-      success: true,
-      upcoming: true,
-      customers: ['Wen', 'NASA'],
-      flightNumber: latestFlightNumber,
-    })
-  );
+  await saveLaunch(newLaunch);
 }
 
 function abortLaunchById(launchId) {
@@ -88,6 +85,6 @@ function abortLaunchById(launchId) {
 module.exports = {
   existsLaunchWithId,
   getAllLaunches,
-  addNewLaunch,
+  scheduleNewLaunch,
   abortLaunchById
 };
