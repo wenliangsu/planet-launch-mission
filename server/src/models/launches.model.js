@@ -23,8 +23,10 @@ saveLaunch(launch);
 
 launches.set(launch.flightNumber, launch);
 
-function existsLaunchWithId(launchId) {
-  return launches.has(launchId);
+async function existsLaunchWithId(launchId) {
+  return await launchesDatabase.findOne({
+    flightNumber: launchId,
+  });
 }
 
 async function getLatestFlightNumber() {
@@ -72,13 +74,16 @@ async function scheduleNewLaunch(launch) {
   await saveLaunch(newLaunch);
 }
 
-function abortLaunchById(launchId) {
-  // note 不用launches.delete(launchId)，資料還可以在利用
-  const aborted = launches.get(launchId);
+async function abortLaunchById(launchId) {
+  const aborted = await launchesDatabase.updateOne({
+    flightNumber: launchId,
+  }, {
+    upcoming: false,
+    success: false,
+  });
 
-  aborted.upcoming = false;
-  aborted.success = false;
-  return aborted;
+  //note 因delete後MongoDB有給許多的資訊，只需要給予一個資訊即可
+  return aborted.modifiedCount === 1;
 }
 
 
