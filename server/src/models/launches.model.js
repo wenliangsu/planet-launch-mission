@@ -108,9 +108,13 @@ async function getLatestFlightNumber() {
   return latestLaunch.flightNumber;
 }
 
-async function getAllLaunches() {
+async function getAllLaunches(skip, limit) {
   //note 第二個參數表示不呈現，以0表示，要呈現則以1表示
-  return launchesDatabase.find({}, { _id: 0, __v: 0 });
+  return launchesDatabase
+    .find({}, { _id: 0, __v: 0 })
+    // note mongoDB不支援pagination，所以要用$skip()和$limit()
+    .skip(skip)
+    .limit(limit);
 }
 
 
