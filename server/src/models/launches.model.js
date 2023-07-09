@@ -6,19 +6,6 @@ const SPACEX_API_URL = 'https://api.spacexdata.com/v4/launches/query';
 
 const DEFAULT_FLIGHT_NUMBER = 100;
 
-const launch = {
-  flightNumber: 100, // flight_number
-  mission: 'Kepler Exploration X', // name
-  rocket: 'Explorer IS1', //rocket name
-  launchDate: new Date('December 27, 2030'),// date_local
-  target: 'Kepler-442 b', // new feature
-  customers: ['ZTM', 'NASA'], // payloads.customers for each payload
-  upcoming: true, // upcoming
-  success: true, // success
-};
-
-saveLaunch(launch);
-
 async function populateLaunches() {
   console.log('Downloading launch data...');
   const response = await axios.post(SPACEX_API_URL, {
@@ -112,6 +99,7 @@ async function getAllLaunches(skip, limit) {
   //note 第二個參數表示不呈現，以0表示，要呈現則以1表示
   return launchesDatabase
     .find({}, { _id: 0, __v: 0 })
+    .sort({ flightNumber: 1 })
     // note mongoDB不支援pagination，所以要用$skip()和$limit()
     .skip(skip)
     .limit(limit);
