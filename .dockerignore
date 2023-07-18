@@ -1,0 +1,6 @@
+.git
+
+*/node_modules
+
+# 因爲這個在執行react的部分會建立(npm run build)，因此不需要再搬入docker裡面
+server/public
