@@ -1,3 +1,4 @@
+// note 已經設定script來先啟動react build 一個public page in server，所以已經變成共用port來顯示網頁
 const API_URL = 'v1';
 
 // Load planets and return as JSON.
